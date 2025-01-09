@@ -17,7 +17,7 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copy the built JAR file from the build stage
-COPY --from=builder /build/target/app.jar .
+COPY --from=builder /build/app.jar .
 
 # Expose the port that the application listens on
 EXPOSE 8080
