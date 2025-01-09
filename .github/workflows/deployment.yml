@@ -3,7 +3,7 @@ name: Build & push to AWS ECR and Deploy to AWS EKS
 on:
   push:
     branches: 
-      - main
+      - master
 env:
   ECR_REPOSITORY: springboot
   ECR_REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com
