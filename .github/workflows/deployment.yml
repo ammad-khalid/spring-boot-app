@@ -73,51 +73,51 @@ jobs:
             echo "Pushing Docker image for service: $service"
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:${{ steps.tag.outputs.image_tag }}
 
-#   deploy:
-#     needs: [detect-changes, build-push]
-#     runs-on: ubuntu-latest
-#     permissions:
-#       id-token: write
-#       contents: read
+  deploy:
+    needs: [detect-changes, build-push]
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
 
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-#       - name: Configure AWS credentials
-#         uses: aws-actions/configure-aws-credentials@v4
-#         with:
-#           role-to-assume: "${{ secrets.DEV_AWS_ROLE_ARN }}"
-#           role-session-name: "github-integration"
-#           aws-region: us-east-1
-# # Installation Required Packages
-#       - name: Install AWS CLI
-#         run: |
-#           curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-#           unzip awscliv2.zip
-#           sudo ./aws/install --update
-#           aws --version    
-#       - name: Install kubectl
-#         run: |
-#           curl -LO "https://dl.k8s.io/release/v1.31.1/bin/linux/amd64/kubectl"
-#           chmod +x ./kubectl
-#           sudo mv ./kubectl /usr/local/bin/kubectl
-#           kubectl version --client 
-#       - name: Update kubeconfig
-#         run: |
-#           aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region me-central-1 
-#       - name: Deploy to Kubernetes
-#         run: |
-#           # Run any Kubernetes deployment commands here, with environment variables loaded from Doppler
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: "${{ secrets.DEV_AWS_ROLE_ARN }}"
+          role-session-name: "assume-role-github-integration"
+          aws-region: us-east-1
+# Installation Required Packages
+      - name: Install AWS CLI
+        run: |
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install --update
+          aws --version    
+      - name: Install kubectl
+        run: |
+          curl -LO "https://dl.k8s.io/release/v1.31.1/bin/linux/amd64/kubectl"
+          chmod +x ./kubectl
+          sudo mv ./kubectl /usr/local/bin/kubectl
+          kubectl version --client 
+      - name: Update kubeconfig
+        run: |
+          aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region us-east-1 
+      - name: Deploy to Kubernetes
+        run: |
+          # Run any Kubernetes deployment commands here, with environment variables loaded from Doppler
 
-#           IMAGE_TAG=${{ needs.build-push.outputs.image_tag }}
-#           BUILD_NUMBER=${{ needs.build-push.outputs.build_number }}
-#           echo "Deploying image with tag: $IMAGE_TAG and build number: $BUILD_NUMBER"
+          IMAGE_TAG=${{ needs.build-push.outputs.image_tag }}
+          BUILD_NUMBER=${{ needs.build-push.outputs.build_number }}
+          echo "Deploying image with tag: $IMAGE_TAG and build number: $BUILD_NUMBER"
 
-#           sed -i.bak "s|DOCKER_IMAGE|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" k8s/$ENVIRONMENT/$PROJECT-deployment.yaml
+          sed -i.bak "s|DOCKER_IMAGE|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" k8s/$ENVIRONMENT/deployment.yaml
           
-#           kubectl apply -f k8s/$ENVIRONMENT/ --namespace=$NAMESPACE
-#           kubectl rollout restart deployment $DEPLOYMENT_NAME  --namespace=$NAMESPACE
+          kubectl apply -f k8s/$ENVIRONMENT/ --namespace=$NAMESPACE
+          kubectl rollout restart deployment $DEPLOYMENT_NAME  --namespace=$NAMESPACE
 
      
        # Verify Deployment and Rollback in Case of Failure
