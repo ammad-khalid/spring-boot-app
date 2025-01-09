@@ -1,6 +1,6 @@
 kind: Namespace
 apiVersion: v1
 metadata:
-  name: java
+  name: springboot
   labels:
    name: java
