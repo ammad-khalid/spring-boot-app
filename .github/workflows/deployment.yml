@@ -116,7 +116,7 @@ jobs:
 
           sed -i.bak "s|DOCKER_IMAGE|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" k8/deployment.yaml
           
-          kubectl apply -f k8s/$ENVIRONMENT/ --namespace=$NAMESPACE
+          kubectl apply -f k8/ --namespace=$NAMESPACE
           kubectl rollout restart deployment $DEPLOYMENT_NAME  --namespace=$NAMESPACE
 
      
