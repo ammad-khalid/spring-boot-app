@@ -16,24 +16,24 @@ spec:
       - name: java
         image: "DOCKER_IMAGE"
         imagePullPolicy: Always
-        livenessProbe:
-          httpGet:
-            path: /health      # Health check path relative to the ingress
-            port: 8080                   # Match container port
-          initialDelaySeconds: 10        # Time before the first probe
-          periodSeconds: 10              # Frequency of probes
-          timeoutSeconds: 5              # Timeout for each probe
-          failureThreshold: 3            # Fail after 3 consecutive failures
-          successThreshold: 1            # Succeed after 1 successful probe
-        readinessProbe:
-          httpGet:
-            path: /health       # Health check path relative to the ingress
-            port: 8080                   # Match container port
-          initialDelaySeconds: 5          # Time before the first probe
-          periodSeconds: 5                # Frequency of probes
-          timeoutSeconds: 3               # Timeout for each probe
-          failureThreshold: 3             # Fail after 3 consecutive failures
-          successThreshold: 1             # Succeed after 1 successful probe
+        # livenessProbe:
+        #   httpGet:
+        #     path: /health      # Health check path relative to the ingress
+        #     port: 8080                   # Match container port
+        #   initialDelaySeconds: 10        # Time before the first probe
+        #   periodSeconds: 10              # Frequency of probes
+        #   timeoutSeconds: 5              # Timeout for each probe
+        #   failureThreshold: 3            # Fail after 3 consecutive failures
+        #   successThreshold: 1            # Succeed after 1 successful probe
+        # readinessProbe:
+        #   httpGet:
+        #     path: /health       # Health check path relative to the ingress
+        #     port: 8080                   # Match container port
+        #   initialDelaySeconds: 5          # Time before the first probe
+        #   periodSeconds: 5                # Frequency of probes
+        #   timeoutSeconds: 3               # Timeout for each probe
+        #   failureThreshold: 3             # Fail after 3 consecutive failures
+        #   successThreshold: 1             # Succeed after 1 successful probe
         resources:
           limits:
             cpu: 512m
