@@ -113,9 +113,7 @@ jobs:
           IMAGE_TAG=${{ needs.build-push.outputs.image_tag }}
           BUILD_NUMBER=${{ needs.build-push.outputs.build_number }}
           echo "Deploying image with tag: $IMAGE_TAG and build number: $BUILD_NUMBER"
-          kubectl config get-contexts
-          kubectl config use-context $EKS_CLUSTER_NAME
-          kubectl config view
+
           sed -i.bak "s|DOCKER_IMAGE|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" k8/deployment.yml
           
           kubectl apply -f k8/ --namespace=$NAMESPACE
