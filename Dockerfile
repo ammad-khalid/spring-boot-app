@@ -8,8 +8,7 @@ WORKDIR /build
 COPY . .
 
 # Build the application
-RUN mvn clean package -DfinalName=app.jar
-RUN ls -lha target
+RUN mvn clean package
 
 # Stage 2: Create the runtime image
 FROM openjdk:17-jdk-slim
@@ -18,7 +17,7 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copy the built JAR file from the build stage
-COPY --from=builder /build/app.jar .
+COPY --from=builder /build/target/spring-boot-lazy-init-example-0.0.1-SNAPSHOT.jar app.jar
 
 # Expose the port that the application listens on
 EXPOSE 8080
