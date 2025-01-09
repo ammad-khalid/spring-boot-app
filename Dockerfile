@@ -9,6 +9,7 @@ COPY . .
 
 # Build the application
 RUN mvn clean package -DfinalName=app.jar
+RUN ls -lha
 
 # Stage 2: Create the runtime image
 FROM openjdk:17-jdk-slim
