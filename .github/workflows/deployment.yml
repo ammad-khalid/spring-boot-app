@@ -88,7 +88,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: "${{ secrets.DEV_AWS_ROLE_ARN }}"
-          role-session-name: "assume-role-github-integration"
+          role-session-name: assume-role-github-integration
           aws-region: us-east-1
 # Installation Required Packages
       - name: Install AWS CLI
@@ -108,7 +108,7 @@ jobs:
           aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region us-east-1
       - name: Deploy to Kubernetes
         run: |
-          # Run any Kubernetes deployment commands here, with environment variables loaded from Doppler
+          # Run any Kubernetes deployment commands here
 
           IMAGE_TAG=${{ needs.build-push.outputs.image_tag }}
           BUILD_NUMBER=${{ needs.build-push.outputs.build_number }}
