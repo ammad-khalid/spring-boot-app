@@ -8,7 +8,7 @@ env:
   ECR_REPOSITORY: springboot
   ECR_REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com
   DEPLOYMENT_NAME: java
-  NAMESPACE: springboot
+  NAMESPACE: java
   PROJECT: springboot
   ENVIRONMENT: dev
   EKS_CLUSTER_NAME: eks-cluster-app-dev
@@ -103,6 +103,13 @@ jobs:
           chmod +x ./kubectl
           sudo mv ./kubectl /usr/local/bin/kubectl
           kubectl version --client 
+          - name: Install kubectl
+      - name: Install Helm
+        run: |
+          curl -LO "https://get.helm.sh/helm-v3.12.0-linux-amd64.tar.gz
+          tar -xvf  helm-v3.12.0-linux-amd64.tar.gz
+          sudo mv linux-amd64  /usr/local/bin
+          helm version
       - name: Update kubeconfig
         run: |
           aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region us-east-1
@@ -113,10 +120,11 @@ jobs:
           IMAGE_TAG=${{ needs.build-push.outputs.image_tag }}
           BUILD_NUMBER=${{ needs.build-push.outputs.build_number }}
           echo "Deploying image with tag: $IMAGE_TAG and build number: $BUILD_NUMBER"
+          sed -i.bak "s|DOCKER_IMAGE|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" charts/templates/deployment.yml
 
-          sed -i.bak "s|DOCKER_IMAGE|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" k8/deployment.yml
-          
-          kubectl apply -f k8/ --namespace=$NAMESPACE
+          helm install java charts/
+          #sed -i.bak "s|DOCKER_IMAGE|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" k8/deployment.yml
+          # kubectl apply -f k8/ --namespace=$NAMESPACE
           kubectl rollout restart deployment $DEPLOYMENT_NAME  --namespace=$NAMESPACE
 
      
