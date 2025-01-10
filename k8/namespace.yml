@@ -3,4 +3,4 @@ apiVersion: v1
 metadata:
   name: springboot
   labels:
-   name: java
+   app:java

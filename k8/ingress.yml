@@ -28,6 +28,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: java  # This should match the Service name
+                name: java 
                 port: 
-                  number: 80  # This should match the Service port 
+                  number: 8080
