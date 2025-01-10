@@ -121,10 +121,12 @@ jobs:
           echo "Deploying image with tag: $IMAGE_TAG and build number: $BUILD_NUMBER"
           sed -i.bak "s|DOCKER_IMAGE|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" charts/templates/deployment.yml
 
-          helm upgrade --install java charts/
+          helm upgrade --install java charts/ --namespace $NAMESPACE
+          kubectl rollout restart deployment $DEPLOYMENT_NAME  --namespace=$NAMESPACE
+          
           #sed -i.bak "s|DOCKER_IMAGE|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" k8/deployment.yml
           # kubectl apply -f k8/ --namespace=$NAMESPACE
-          kubectl rollout restart deployment $DEPLOYMENT_NAME  --namespace=$NAMESPACE
+          # kubectl rollout restart deployment $DEPLOYMENT_NAME  --namespace=$NAMESPACE
 
      
        # Verify Deployment and Rollback in Case of Failure
