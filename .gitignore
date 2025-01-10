@@ -27,3 +27,5 @@ HELP.md
 
 ### VS Code ###
 .vscode/
+
+charts/templates/namespace.yml
