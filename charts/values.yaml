@@ -1,3 +1,4 @@
+createNamespace: false
 metadata:
  name: java
 spec: 
