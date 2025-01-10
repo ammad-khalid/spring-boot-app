@@ -7,7 +7,7 @@ on:
 env:
   ECR_REPOSITORY: springboot
   ECR_REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com
-  DEPLOYMENT_NAME: springboot
+  DEPLOYMENT_NAME: java
   NAMESPACE: springboot
   PROJECT: springboot
   ENVIRONMENT: dev
