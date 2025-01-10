@@ -10,7 +10,7 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ .Values.spec.template.app }}
+        app: {{ .Values.spec.app }}
     spec:
       containers:
       - name: {{ .Values.metadata.name }}
