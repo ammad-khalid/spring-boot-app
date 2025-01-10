@@ -1,0 +1,10 @@
+{{- if .Values.createNamespace }}
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: {{ .Values.metadata.name }}
+  annotations:
+    "helm.sh/hook": pre-install
+  labels:
+   app: {{ .Values.spec.app }}
+{{- end }}   
